@@ -75,6 +75,16 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
+    int status2;
+    waitpid(pid2, &status2, 0);
+
+    if (WIFEXITED(status2) && WEXITSTATUS(status2) == 0) {
+        printf("[OK] Quarto renderizo exitosamente.\n");
+    } else {
+        fprintf(stderr, "[ERROR] quarto render fallo (codigo %d)\n", WEXITSTATUS(status2));
+        exit(EXIT_FAILURE);
+    }
+
     pid_t pid3 = fork();
 
     if (pid3 < 0) {
@@ -91,18 +101,7 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-     /* PADRE: espera que Quarto termine */
-    int status2;
-    waitpid(pid2, &status2, 0);
 
-    if (WIFEXITED(status2) && WEXITSTATUS(status2) == 0) {
-        printf("[OK] Quarto renderizo exitosamente.\n");
-        printf("\n=== ShellDoc completado con exito ===\n");
-    } else {
-        fprintf(stderr, "[ERROR] quarto render fallo (codigo %d)\n",
-                WEXITSTATUS(status2));
-        exit(EXIT_FAILURE);
-    }
 
     pid_t pid4 = fork();
 
@@ -120,7 +119,6 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
  
-    /*Padre espera que termine la subida del Git*/
     int status3;
     waitpid(pid4, &status3, 0);
 
