@@ -4,6 +4,7 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 
+
 int main(int argc, char *argv[]) {
 
     /* --- Parametrizacion via argumentos --- */
@@ -21,7 +22,9 @@ int main(int argc, char *argv[]) {
     printf(" Render  : %s\n", archivo_render);
 
     /* 
-       FASE 1  Proceso hijo lanza el procesador hilos y genera informacion.qmd usando 3 hilos + semaforos
+       FASE 1  Proceso hijo lanza el procesador hilos
+       El binario './procesador_hilos' lee sesion_linux.txt
+       y genera informacion.qmd usando 3 hilos + semaforos
  */
     printf("\n[FASE 1] Lanzando procesador de hilos...\n");
 
@@ -34,6 +37,7 @@ int main(int argc, char *argv[]) {
 
     if (pid1 == 0) {
         /* HIJO: ejecuta el procesador de hilos */
+        /* Nota: procesador_hilos lee sesion_linux.txt desde el CWD */
         execlp("./procesador_hilos", "./procesador_hilos", NULL);
         perror("[ERROR] execlp procesador_hilos");
         exit(EXIT_FAILURE);
@@ -71,7 +75,23 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    /* PADRE: espera que Quarto termine */
+    pid_t pid3 = fork();
+
+    if (pid3 < 0) {
+        perror("[ERROR] fork() fase 3");
+        exit(EXIT_FAILURE);
+    }
+
+    if (pid3 == 0) {
+        /* HIJO: ejecuta quarto preview en un puerto específico */
+        execlp("quarto", "quarto", "preview", archivo_render, "--port", "4370", NULL);
+        
+        /* Si llega a esta línea, el comando falló */
+        perror("[ERROR] execlp quarto");
+        exit(EXIT_FAILURE);
+    }
+
+     /* PADRE: espera que Quarto termine */
     int status2;
     waitpid(pid2, &status2, 0);
 
@@ -82,6 +102,34 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "[ERROR] quarto render fallo (codigo %d)\n",
                 WEXITSTATUS(status2));
         exit(EXIT_FAILURE);
+    }
+
+    pid_t pid4 = fork();
+
+    if (pid4 < 0) {
+        perror("[ERROR] fork() fase 4");
+        exit(EXIT_FAILURE);
+    }
+
+    if (pid4 == 0) {
+        /* HIJO: Sube los cambios a github automaticamente */
+        execlp("sh", "sh", "-c", "git add . && git commit -m 'Guardado automático' && git push origin main", NULL);
+        
+        /* Si llega a esta línea, el comando falló */
+        perror("[ERROR] execlp git automatizacion");
+        exit(EXIT_FAILURE);
+    }
+ 
+    /*Padre espera que termine la subida del Git*/
+    int status3;
+    waitpid(pid4, &status3, 0);
+
+    if (WIFEXITED(status3) && WEXITSTATUS(status3) == 0) {
+        printf("[OK] ¡Código y documentación subidos a GitHub con éxito!\n");
+        printf("-> GitHub Actions está publicando tu página en la nube.\n");
+        printf("\n=== ShellDoc completado con éxito ===\n");
+    } else {
+        fprintf(stderr, "[WARN] No se pudo subir a GitHub. Revisa el estado de Git.\n");
     }
 
     return EXIT_SUCCESS;
