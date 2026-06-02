@@ -126,6 +126,21 @@ int main(int argc, char *argv[]) {
      int status3;
     waitpid(pid3, &status3, 0);
 
+    if (WIFEXITED(status3) && WEXITSTATUS(status3) == 0) {
+        printf("[OK] ¡Código y documentación subidos a GitHub con éxito!\n");
+        printf("-> GitHub Actions está publicando tu página en la nube.\n");
+    } else {
+        fprintf(stderr, "[WARN] No se pudo subir a GitHub. Revisa el estado de Git.\n");
+    }
+
+     if (WIFEXITED(status3) && WEXITSTATUS(status3) == 0) {
+        printf("[OK] ¡Código y documentación subidos a GitHub con éxito!\n");
+        printf("-> GitHub Actions está publicando tu página en la nube.\n");
+        printf("\n=== ShellDoc completado con éxito ===\n");
+    } else {
+        fprintf(stderr, "[WARN] No se pudo subir a GitHub. Revisa el estado de Git.\n");
+    }
+
     pid_t pid4 = fork();
 
     if (pid4 < 0) {
@@ -145,15 +160,9 @@ int main(int argc, char *argv[]) {
     int status4;
     waitpid(pid4, &status4, 0);
 
- 
 
-    if (WIFEXITED(status3) && WEXITSTATUS(status3) == 0) {
-        printf("[OK] ¡Código y documentación subidos a GitHub con éxito!\n");
-        printf("-> GitHub Actions está publicando tu página en la nube.\n");
-        printf("\n=== ShellDoc completado con éxito ===\n");
-    } else {
-        fprintf(stderr, "[WARN] No se pudo subir a GitHub. Revisa el estado de Git.\n");
-    }
+    printf("\n=== Servidor apagado. ShellDoc completado con éxito ===\n");
+    return EXIT_SUCCESS;
 
     return EXIT_SUCCESS;
 }
