@@ -163,6 +163,4 @@ int main(int argc, char *argv[]) {
 
     printf("\n=== Servidor apagado. ShellDoc completado con éxito ===\n");
     return EXIT_SUCCESS;
-
-    return EXIT_SUCCESS;
 }
