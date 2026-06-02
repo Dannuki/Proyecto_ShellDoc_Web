@@ -7,6 +7,29 @@
 
 int main(int argc, char *argv[]) {
 
+    /* --- FASE PREVIA: Limpiar el puerto de ejecuciones anteriores --- */
+    printf("\n[FASE PREVIA] Liberando el puerto 4370...\n");
+    pid_t pid_clean = fork();
+
+    if (pid_clean < 0) {
+        perror("[ERROR] fork() fase previa");
+        exit(EXIT_FAILURE);
+    }
+
+    if (pid_clean == 0) {
+        /* HIJO: Ejecutamos killall de forma silenciosa. 
+           El '|| true' evita que el comando falle si no hay ningún Quarto abierto */
+        execlp("sh", "sh", "-c", "killall -q quarto || true", NULL);
+        
+        /* Si llega aquí hubo un error crítico en exec, pero no detenemos el programa */
+        exit(EXIT_SUCCESS); 
+    }
+
+    /* PADRE: Espera a que el puerto se libere antes de continuar con la Fase 1 */
+    int status_clean;
+    waitpid(pid_clean, &status_clean, 0);
+    printf("[OK] Puerto limpio y listo.\n");
+
     /* --- Parametrizacion via argumentos --- */
     if (argc < 3) {
         fprintf(stderr, "Uso: %s <sesion.txt> <archivo_render.qmd>\n", argv[0]);
