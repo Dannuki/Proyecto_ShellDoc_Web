@@ -1,11 +1,14 @@
 Script started on 2026-06-01 17:43:32-05:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="169" LINES="15"]
 [?2004h]0;dannuki@dany-server: ~/Proyecto_ShellDoc_Web[01;32mdannuki@dany-server[00m:[01;34m~/Proyecto_ShellDoc_Web[00m$ mn[K[Kr[Kls
-[?2004l'Informe Proyecto ShellDoc.pdf'   [0m[01;32mIniciador[0m   index.html   [01;32mprocesador_hilos[0m   sesion_linux.txt   [01;34msrc[0m   [01;34mweb[0m
+[?2004l
+'Informe Proyecto ShellDoc.pdf'   [0m[01;32mIniciador[0m   index.html   [01;32mprocesador_hilos[0m   sesion_linux.txt   [01;34msrc[0m   [01;34mweb[0m
 [?2004h]0;dannuki@dany-server: ~/Proyecto_ShellDoc_Web[01;32mdannuki@dany-server[00m:[01;34m~/Proyecto_ShellDoc_Web[00m$ ps
-[?2004l    PID TTY          TIME CMD
+[?2004l
+    PID TTY          TIME CMD
   26429 pts/2    00:00:00 bash
   26553 pts/2    00:00:00 ps
 [?2004h]0;dannuki@dany-server: ~/Proyecto_ShellDoc_Web[01;32mdannuki@dany-server[00m:[01;34m~/Proyecto_ShellDoc_Web[00m$ exit
-[?2004lexit
-
+[?2004l
+exit
+    
 Script done on 2026-06-01 17:43:58-05:00 [COMMAND_EXIT_CODE="0"]
