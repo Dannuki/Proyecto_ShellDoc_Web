@@ -135,7 +135,7 @@ int main(int argc, char *argv[]) {
 
     if (pid4 == 0) {
         /* HIJO: ejecuta quarto preview en un puerto específico */
-        execlp("quarto", "quarto", "preview", archivo_render, "--port", "4370", NULL);
+        execlp("quarto", "quarto", "preview", archivo_render, "--port", "4370", "--host", "0.0.0.0", "--no-browser", NULL);
         
         /* Si llega a esta línea, el comando falló */
         perror("[ERROR] execlp quarto");
@@ -144,6 +144,7 @@ int main(int argc, char *argv[]) {
 
     int status4;
     waitpid(pid4, &status4, 0);
+
  
 
     if (WIFEXITED(status3) && WEXITSTATUS(status3) == 0) {
