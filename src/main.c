@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
 
     if (pid4 == 0) {
         /* HIJO: Sube los cambios a github automaticamente */
-        execlp("sh", "sh", "-c", "git add . && git commit -m 'Guardado automático' && git push origin main", NULL);
+        execlp("sh", "sh", "-c", "git add . ; git commit -m 'Guardado automático' ; git push origin main", NULL);
         
         /* Si llega a esta línea, el comando falló */
         perror("[ERROR] execlp git automatizacion");
