@@ -23,10 +23,11 @@ jobs:
       - name: Setup C/C++ Compiler
         run: sudo apt-get install -y gcc g++
 
-      # Despliegue directo a GitHub Pages
+          # Despliegue directo a GitHub Pages
       - name: Publish to GitHub Pages
         uses: quarto-dev/quarto-actions/publish@v2
         with:
           target: gh-pages
+          path: web/templates.qmd  # <--- ESTA ES LA LÍNEA NUEVA
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
