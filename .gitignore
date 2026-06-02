@@ -1,8 +1,0 @@
-*.out
-*.o
-procesos
-main
-.quarto/
-_site/
-*.log
-.DS_Store
