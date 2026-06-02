@@ -17,9 +17,8 @@ int main(int argc, char *argv[]) {
     }
 
     if (pid_clean == 0) {
-        /* HIJO: Ejecutamos killall de forma silenciosa. 
-           El '|| true' evita que el comando falle si no hay ningún Quarto abierto */
-        execlp("sh", "sh", "-c", "killall -q quarto || true", NULL);
+    
+        execlp("sh", "sh", "-c", "fuser -k 4370/tcp || true", NULL);
         
         /* Si llega aquí hubo un error crítico en exec, pero no detenemos el programa */
         exit(EXIT_SUCCESS); 
